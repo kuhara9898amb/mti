@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お客様情報入力</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --line: #d2d2d7;
+      --field: #fbfbfd;
+      --accent: #0071e3;
+      --accent-dark: #005bb5;
+      --success: #34c759;
+      --shadow: 0 18px 60px rgba(0,0,0,0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", "Yu Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    main {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 18px 14px 34px;
+    }
+
+    .screen {
+      display: none;
+      width: 100%;
+      max-width: 440px;
+      background: var(--card);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: fade .22s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      padding: 30px 22px 20px;
+      border-bottom: 1px solid #ececef;
+      background: linear-gradient(180deg, #ffffff, #f8f8fa);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: -0.045em;
+      font-weight: 760;
+    }
+
+    .header p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .content {
+      padding: 22px;
+    }
+
+    .form {
+      display: grid;
+      gap: 15px;
+    }
+
+    label {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      appearance: none;
+      margin-top: 8px;
+      padding: 15px 14px;
+      border: 1px solid #d7d7dc;
+      border-radius: 15px;
+      background: var(--field);
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+      transition: .18s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(0,113,227,0.13);
+    }
+
+    select {
+      background-image:
+        linear-gradient(45deg, transparent 50%, #777 50%),
+        linear-gradient(135deg, #777 50%, transparent 50%);
+      background-position:
+        calc(100% - 20px) calc(50% + 1px),
+        calc(100% - 15px) calc(50% + 1px);
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .hint {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .buttons {
+      display: grid;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .buttons.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 999px;
+      padding: 16px 18px;
+      font-size: 16px;
+      font-weight: 760;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .primary:hover {
+      background: var(--accent-dark);
+    }
+
+    .secondary {
+      background: #f0f0f2;
+      color: var(--text);
+    }
+
+    .summary {
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid #e8e8ed;
+      background: #fbfbfd;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: 105px 1fr;
+      gap: 12px;
+      padding: 15px 16px;
+      border-bottom: 1px solid #ededf0;
+      font-size: 14px;
+    }
+
+    .summary-row:last-child {
+      border-bottom: 0;
+    }
+
+    .key {
+      color: var(--muted);
+      font-weight: 760;
+    }
+
+    .value {
+      color: var(--text);
+      line-height: 1.55;
+      word-break: break-word;
+    }
+
+    .complete {
+      padding: 46px 22px 30px;
+      text-align: center;
+    }
+
+    .check {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--success);
+      color: #ffffff;
+      font-size: 42px;
+      font-weight: 800;
+      box-shadow: 0 18px 42px rgba(52,199,89,0.28);
+    }
+
+    .complete h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: -0.045em;
+      line-height: 1.25;
+    }
+
+    .complete p {
+      margin: 14px auto 0;
+      max-width: 330px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 14px;
+    }
+
+    @media (min-width: 720px) {
+      main {
+        align-items: center;
+        padding: 40px 20px;
+      }
+
+      .screen {
+        max-width: 520px;
+        border-radius: 32px;
+      }
+
+      .header {
+        padding: 36px 34px 24px;
+      }
+
+      .header h1 {
+        font-size: 34px;
+      }
+
+      .content {
+        padding: 28px 34px 34px;
+      }
+
+      .row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 360px) {
+      main {
+        padding: 10px;
+      }
+
+      .screen {
+        border-radius: 24px;
+      }
+
+      .header,
+      .content {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .summary-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+
+      .buttons.two {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="screen active" id="inputScreen">
+      <div class="header">
+        <h1>お客様情報の入力</h1>
+        <p>必要事項をご入力のうえ、確認画面へお進みください。</p>
+      </div>
+
+      <div class="content">
+        <form class="form">
+          <div class="row">
+            <label>
+              氏名
+              <input type="text" value="山田 太郎">
+            </label>
+
+            <label>
+              フリガナ
+              <input type="text" value="ヤマダ タロウ">
+            </label>
+          </div>
+
+          <label>
+            生年月日
+            <input type="date" value="1985-04-12">
+          </label>
+
+          <label>
+            メールアドレス
+            <input type="email" value="taro.yamada@example.com">
+            <div class="hint">送信完了後、確認メールをお送りします。</div>
+          </label>
+
+          <div class="row">
+            <label>
+              郵便番号
+              <input type="text" value="530-0001">
+            </label>
+
+            <label>
+              都道府県
+              <select>
+                <option>大阪府</option>
+                <option>東京都</option>
+                <option>京都府</option>
+                <option>兵庫県</option>
+                <option>愛知県</option>
+                <option>福岡県</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            住所
+            <input type="text" value="大阪市北区梅田1-1-1">
+          </label>
+
+          <label>
+            建物名・部屋番号
+            <input type="text" value="グランフロント大阪 1201">
+          </label>
+
+          <div class="buttons">
+            <button type="button" class="primary" onclick="showScreen('confirmScreen')">確認画面へ</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="screen" id="confirmScreen">
+      <div class="header">
+        <h1>入力内容の確認</h1>
+        <p>内容にお間違いがないかご確認ください。</p>
+      </div>
+
+      <div class="content">
+        <div class="summary">
+          <div class="summary-row"><div class="key">氏名</div><div class="value">山田 太郎</div></div>
+          <div class="summary-row"><div class="key">フリガナ</div><div class="value">ヤマダ タロウ</div></div>
+          <div class="summary-row"><div class="key">生年月日</div><div class="value">1985年4月12日</div></div>
+          <div class="summary-row"><div class="key">メール</div><div class="value">taro.yamada@example.com</div></div>
+          <div class="summary-row"><div class="key">郵便番号</div><div class="value">530-0001</div></div>
+          <div class="summary-row"><div class="key">都道府県</div><div class="value">大阪府</div></div>
+          <div class="summary-row"><div class="key">住所</div><div class="value">大阪市北区梅田1-1-1</div></div>
+          <div class="summary-row"><div class="key">建物名</div><div class="value">グランフロント大阪 1201</div></div>
+        </div>
+
+        <div class="buttons two">
+          <button type="button" class="secondary" onclick="showScreen('inputScreen')">修正する</button>
+          <button type="button" class="primary" onclick="showScreen('completeScreen')">送信する</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="completeScreen">
+      <div class="complete">
+        <div class="check">✓</div>
+        <h1>送信が完了しました</h1>
+        <p>
+          ご入力いただいた情報を受け付けました。確認メールを送信しましたので、ご確認ください。
+        </p>
+
+        <div class="buttons">
+          <button type="button" class="primary" onclick="showScreen('inputScreen')">入力画面へ戻る</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+      });
+
+      document.getElementById(id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
