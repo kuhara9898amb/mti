@@ -73,6 +73,41 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      margin: 22px 0 0;
+      padding: 18px 14px 0;
+      border-top: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 850;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .copyright {
+      margin: 14px 0 0;
+      color: var(--text);
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .service-title {
+      display: block;
+      margin: 0 0 16px;
+      color: var(--primary);
+      font-size: 24px;
+      line-height: 1.22;
+      letter-spacing: -0.035em;
+      font-weight: 850;
+    }
+
     .header {
       position: relative;
       padding: 30px 22px 22px;
@@ -80,20 +115,25 @@
       background: #ffffff;
     }
 
-    .header::before {
+    .title-group {
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .title-group::before {
       content: "";
       position: absolute;
-      left: 22px;
-      top: 30px;
+      left: 0;
+      top: 0;
       width: 7px;
-      height: 58px;
+      height: 100%;
       border-radius: 999px;
       background: var(--accent);
     }
 
     .eyebrow {
       display: block;
-      margin: 0 0 12px 20px;
+      margin: 0 0 10px;
       color: var(--muted);
       font-size: 12px;
       font-weight: 800;
@@ -105,8 +145,8 @@
     }
 
     .header h1 {
-      margin: 0 0 0 20px;
-      font-size: 28px;
+      margin: 0;
+      font-size: 24px;
       line-height: 1.18;
       letter-spacing: -0.04em;
       font-weight: 850;
@@ -114,7 +154,7 @@
     }
 
     .header p {
-      margin: 12px 0 0 20px;
+      margin: 14px 0 0;
       color: var(--muted);
       font-size: 14px;
       line-height: 1.7;
@@ -362,7 +402,7 @@
 
     .complete h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 24px;
       letter-spacing: -0.045em;
       line-height: 1.25;
       color: var(--primary);
@@ -392,20 +432,16 @@
         padding: 38px 34px 26px;
       }
 
-      .header::before {
-        left: 34px;
-        top: 38px;
-        height: 62px;
-      }
-
       .header h1 {
-        font-size: 35px;
+        font-size: 28px;
       }
 
-      .eyebrow,
-      .header h1,
-      .header p {
-        margin-left: 22px;
+      .service-title {
+        margin-left: 0;
+      }
+
+      .title-group {
+        padding-left: 22px;
       }
 
       .content {
@@ -418,6 +454,10 @@
     }
 
     @media (max-width: 360px) {
+      .footer-links {
+        gap: 18px;
+      }
+
       main {
         padding: 10px;
       }
@@ -432,14 +472,12 @@
         padding-right: 18px;
       }
 
-      .header::before {
-        left: 18px;
+      .service-title {
+        margin-left: 0;
       }
 
-      .eyebrow,
-      .header h1,
-      .header p {
-        margin-left: 18px;
+      .title-group {
+        padding-left: 18px;
       }
 
       .summary-row {
@@ -457,8 +495,11 @@
   <main>
     <section class="screen active" id="inputScreen">
       <div class="header">
-        <div class="eyebrow">SECURE FORM</div>
-        <h1>お客様情報の入力</h1>
+        <div class="service-title">●●●●サービス（名称待ち）</div>
+        <div class="title-group">
+          <div class="eyebrow">SECURE FORM</div>
+          <h1>お客様情報の入力</h1>
+        </div>
         <p>必要事項をご入力のうえ、個人情報の取得に同意して確認画面へお進みください。</p>
       </div>
 
@@ -467,35 +508,43 @@
           <div class="row">
             <label>
               氏名
-              <input type="text" value="山田 太郎">
+              <input type="text">
             </label>
 
             <label>
               フリガナ
-              <input type="text" value="ヤマダ タロウ">
+              <input type="text">
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              生年月日
+              <input type="date">
+            </label>
+
+            <label>
+              電話番号
+              <input type="tel">
             </label>
           </div>
 
           <label>
-            生年月日
-            <input type="date" value="1985-04-12">
-          </label>
-
-          <label>
             メールアドレス
-            <input type="email" value="taro.yamada@example.com">
+            <input type="email">
             <div class="hint">送信完了後、確認メールをお送りします。</div>
           </label>
 
           <div class="row">
             <label>
               郵便番号
-              <input type="text" value="530-0001">
+              <input type="text">
             </label>
 
             <label>
               都道府県
               <select>
+                <option value="" selected>選択してください</option>
                 <option>大阪府</option>
                 <option>東京都</option>
                 <option>京都府</option>
@@ -508,12 +557,12 @@
 
           <label>
             住所
-            <input type="text" value="大阪市北区梅田1-1-1">
+            <input type="text">
           </label>
 
           <label>
             建物名・部屋番号
-            <input type="text" value="グランフロント大阪 1201">
+            <input type="text">
           </label>
 
           <div class="consent-box">
@@ -529,26 +578,35 @@
             <button type="button" class="primary" id="confirmButton" onclick="showScreen('confirmScreen')" disabled>確認画面へ</button>
           </div>
         </form>
+
+        <div class="footer-links">
+          <a href="kiyaku.html" target="_blank" rel="noopener noreferrer">利用規約</a>
+          <a href="law.html" target="_blank" rel="noopener noreferrer">特定商取引法に基づく表記</a>
+        </div>
+        <p class="copyright">Copyright (c) LifeIn24 Co., Ltd. All Rights Reserved.</p>
       </div>
     </section>
 
     <section class="screen" id="confirmScreen">
       <div class="header">
-        <div class="eyebrow">CONFIRM</div>
-        <h1>入力内容の確認</h1>
+        <div class="title-group">
+          <div class="eyebrow">CONFIRM</div>
+          <h1>入力内容の確認</h1>
+        </div>
         <p>内容にお間違いがないかご確認ください。</p>
       </div>
 
       <div class="content">
         <div class="summary">
-          <div class="summary-row"><div class="key">氏名</div><div class="value">山田 太郎</div></div>
-          <div class="summary-row"><div class="key">フリガナ</div><div class="value">ヤマダ タロウ</div></div>
-          <div class="summary-row"><div class="key">生年月日</div><div class="value">1985年4月12日</div></div>
-          <div class="summary-row"><div class="key">メール</div><div class="value">taro.yamada@example.com</div></div>
-          <div class="summary-row"><div class="key">郵便番号</div><div class="value">530-0001</div></div>
-          <div class="summary-row"><div class="key">都道府県</div><div class="value">大阪府</div></div>
-          <div class="summary-row"><div class="key">住所</div><div class="value">大阪市北区梅田1-1-1</div></div>
-          <div class="summary-row"><div class="key">建物名</div><div class="value">グランフロント大阪 1201</div></div>
+          <div class="summary-row"><div class="key">氏名</div><div class="value"></div></div>
+          <div class="summary-row"><div class="key">フリガナ</div><div class="value"></div></div>
+          <div class="summary-row"><div class="key">生年月日</div><div class="value"></div></div>
+          <div class="summary-row"><div class="key">電話番号</div><div class="value"></div></div>
+          <div class="summary-row"><div class="key">メール</div><div class="value"></div></div>
+          <div class="summary-row"><div class="key">郵便番号</div><div class="value"></div></div>
+          <div class="summary-row"><div class="key">都道府県</div><div class="value"></div></div>
+          <div class="summary-row"><div class="key">住所</div><div class="value"></div></div>
+          <div class="summary-row"><div class="key">建物名</div><div class="value"></div></div>
           <div class="summary-row"><div class="key">同意</div><div class="value">個人情報の取得・利用に同意済み</div></div>
         </div>
 
