@@ -508,42 +508,42 @@
           <div class="row">
             <label>
               氏名
-              <input type="text">
+              <input type="text" id="nameInput">
             </label>
 
             <label>
               フリガナ
-              <input type="text">
+              <input type="text" id="kanaInput">
             </label>
           </div>
 
           <div class="row">
             <label>
               生年月日
-              <input type="date">
+              <input type="date" id="birthInput">
             </label>
 
             <label>
               電話番号
-              <input type="tel">
+              <input type="tel" id="telInput">
             </label>
           </div>
 
           <label>
             メールアドレス
-            <input type="email">
-            <div class="hint">送信完了後、確認メールをお送りします。</div>
+            <input type="email" id="emailInput">
+            
           </label>
 
           <div class="row">
             <label>
               郵便番号
-              <input type="text">
+              <input type="text" id="zipInput">
             </label>
 
             <label>
               都道府県
-              <select>
+              <select id="prefInput">
                 <option value="" selected>選択してください</option>
                 <option>大阪府</option>
                 <option>東京都</option>
@@ -557,12 +557,12 @@
 
           <label>
             住所
-            <input type="text">
+            <input type="text" id="addressInput">
           </label>
 
           <label>
             建物名・部屋番号
-            <input type="text">
+            <input type="text" id="buildingInput">
           </label>
 
           <div class="consent-box">
@@ -575,15 +575,9 @@
           </div>
 
           <div class="buttons">
-            <button type="button" class="primary" id="confirmButton" onclick="showScreen('confirmScreen')" disabled>確認画面へ</button>
+            <button type="button" class="primary" id="confirmButton" onclick="goConfirm()" disabled>確認画面へ</button>
           </div>
         </form>
-
-        <div class="footer-links">
-          <a href="kiyaku.html" target="_blank" rel="noopener noreferrer">利用規約</a>
-          <a href="law.html" target="_blank" rel="noopener noreferrer">特定商取引法に基づく表記</a>
-        </div>
-        <p class="copyright">Copyright (c) LifeIn24 Co., Ltd. All Rights Reserved.</p>
       </div>
     </section>
 
@@ -598,15 +592,15 @@
 
       <div class="content">
         <div class="summary">
-          <div class="summary-row"><div class="key">氏名</div><div class="value"></div></div>
-          <div class="summary-row"><div class="key">フリガナ</div><div class="value"></div></div>
-          <div class="summary-row"><div class="key">生年月日</div><div class="value"></div></div>
-          <div class="summary-row"><div class="key">電話番号</div><div class="value"></div></div>
-          <div class="summary-row"><div class="key">メール</div><div class="value"></div></div>
-          <div class="summary-row"><div class="key">郵便番号</div><div class="value"></div></div>
-          <div class="summary-row"><div class="key">都道府県</div><div class="value"></div></div>
-          <div class="summary-row"><div class="key">住所</div><div class="value"></div></div>
-          <div class="summary-row"><div class="key">建物名</div><div class="value"></div></div>
+          <div class="summary-row"><div class="key">氏名</div><div class="value" id="nameConfirm"></div></div>
+          <div class="summary-row"><div class="key">フリガナ</div><div class="value" id="kanaConfirm"></div></div>
+          <div class="summary-row"><div class="key">生年月日</div><div class="value" id="birthConfirm"></div></div>
+          <div class="summary-row"><div class="key">電話番号</div><div class="value" id="telConfirm"></div></div>
+          <div class="summary-row"><div class="key">メール</div><div class="value" id="emailConfirm"></div></div>
+          <div class="summary-row"><div class="key">郵便番号</div><div class="value" id="zipConfirm"></div></div>
+          <div class="summary-row"><div class="key">都道府県</div><div class="value" id="prefConfirm"></div></div>
+          <div class="summary-row"><div class="key">住所</div><div class="value" id="addressConfirm"></div></div>
+          <div class="summary-row"><div class="key">建物名</div><div class="value" id="buildingConfirm"></div></div>
           <div class="summary-row"><div class="key">同意</div><div class="value">個人情報の取得・利用に同意済み</div></div>
         </div>
 
@@ -624,7 +618,7 @@
         <p>ご入力いただいた情報を受け付けました。確認メールを送信しましたので、ご確認ください。</p>
 
         <div class="buttons">
-          <button type="button" class="primary" onclick="showScreen('inputScreen')">入力画面へ戻る</button>
+          <button type="button" class="primary" onclick="resetFormAndBack()">入力画面へ戻る</button>
         </div>
       </div>
     </section>
@@ -638,6 +632,90 @@
 
       document.getElementById(id).classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function formatDate(value) {
+      if (!value) return '';
+      const parts = value.split('-');
+      if (parts.length !== 3) return value;
+      return Number(parts[0]) + '年' + Number(parts[1]) + '月' + Number(parts[2]) + '日';
+    }
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = value || '';
+      }
+    }
+
+    function goConfirm() {
+      setText('nameConfirm', document.getElementById('nameInput').value);
+      setText('kanaConfirm', document.getElementById('kanaInput').value);
+      setText('birthConfirm', formatDate(document.getElementById('birthInput').value));
+      setText('telConfirm', document.getElementById('telInput').value);
+      setText('emailConfirm', document.getElementById('emailInput').value);
+      setText('zipConfirm', document.getElementById('zipInput').value);
+      setText('prefConfirm', document.getElementById('prefInput').value);
+      setText('addressConfirm', document.getElementById('addressInput').value);
+      setText('buildingConfirm', document.getElementById('buildingInput').value);
+
+      showScreen('confirmScreen');
+    }
+
+    function resetFormAndBack() {
+      const inputIds = [
+        'nameInput',
+        'kanaInput',
+        'birthInput',
+        'telInput',
+        'emailInput',
+        'zipInput',
+        'addressInput',
+        'buildingInput'
+      ];
+
+      inputIds.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.value = '';
+        }
+      });
+
+      const prefInput = document.getElementById('prefInput');
+      if (prefInput) {
+        prefInput.value = '';
+      }
+
+      const privacyConsent = document.getElementById('privacyConsent');
+      if (privacyConsent) {
+        privacyConsent.checked = false;
+      }
+
+      const confirmButton = document.getElementById('confirmButton');
+      if (confirmButton) {
+        confirmButton.disabled = true;
+      }
+
+      const confirmIds = [
+        'nameConfirm',
+        'kanaConfirm',
+        'birthConfirm',
+        'telConfirm',
+        'emailConfirm',
+        'zipConfirm',
+        'prefConfirm',
+        'addressConfirm',
+        'buildingConfirm'
+      ];
+
+      confirmIds.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.textContent = '';
+        }
+      });
+
+      showScreen('inputScreen');
     }
 
     const privacyConsent = document.getElementById('privacyConsent');
